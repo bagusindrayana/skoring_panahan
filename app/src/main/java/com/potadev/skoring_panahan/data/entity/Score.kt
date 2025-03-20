@@ -28,5 +28,5 @@ data class Score(
     val participantId: Long,
     val endNumber: Int,
     val shootNumber: Int,
-    val score: Int
+    var score: Int
 )
