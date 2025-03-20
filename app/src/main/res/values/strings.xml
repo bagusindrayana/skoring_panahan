@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Skoring Panahan</string>
+    
+    <!-- Navigation -->
+    <string name="title_rounds">Rounds</string>
+    <string name="title_participants">Participants</string>
+    <string name="title_scores">Scores</string>
+    
+    <!-- Participants -->
+    <string name="add_participant">Add Participant</string>
+    <string name="edit_participant">Edit Participant</string>
+    <string name="participant_name">Participant Name</string>
+    
+    <!-- Rounds -->
+    <string name="add_round">Add Round</string>
+    <string name="edit_round">Edit Round</string>
+    <string name="round_name">Round Name</string>
+    <string name="date">Date</string>
+    <string name="number_of_ends">Number of Ends</string>
+    <string name="shoots_per_end">Shoots Per End</string>
+    <string name="select_participants">Select Participants</string>
+    
+    <!-- Scores -->
+    <string name="end">End</string>
+    <string name="shoot">Shoot</string>
+    <string name="score">Score</string>
+    
+    <!-- Buttons -->
+    <string name="save">Save</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="view_scores">View Scores</string>
+</resources>

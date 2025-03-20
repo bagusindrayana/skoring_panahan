@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/roundsFragment">
+
+    <fragment
+        android:id="@+id/roundsFragment"
+        android:name="com.potadev.skoring_panahan.ui.rounds.RoundsFragment"
+        android:label="@string/title_rounds">
+        <action
+            android:id="@+id/action_roundsFragment_to_scoreFragment"
+            app:destination="@id/scoreFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/participantsFragment"
+        android:name="com.potadev.skoring_panahan.ui.participants.ParticipantsFragment"
+        android:label="@string/title_participants" />
+
+    <fragment
+        android:id="@+id/scoreFragment"
+        android:name="com.potadev.skoring_panahan.ui.rounds.ScoreFragment"
+        android:label="@string/title_scores">
+        <argument
+            android:name="roundId"
+            app:argType="long" />
+    </fragment>
+
+</navigation>
