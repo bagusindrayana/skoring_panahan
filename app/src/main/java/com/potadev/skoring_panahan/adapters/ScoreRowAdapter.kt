@@ -18,16 +18,16 @@ import kotlinx.coroutines.launch
 
 class ScoreRowAdapter(
     private val roundId: Long,
-    participantId: Long, // Remove 'private var' to use the property below
+    private var participantId: Long,
     private val numberOfEnds: Int,
     private val shootsPerEnd: Int,
-    scores: List<Score>, // Remove 'private var' to use the property below
+    private var scores: List<Score>,
     private val scoreViewModel: ScoreViewModel
 ) : RecyclerView.Adapter<ScoreRowAdapter.ViewHolder>() {
     
     // Declare as separate properties to ensure they're mutable
-    private var participantId: Long = participantId
-    private var scores: List<Score> = scores
+//    private var participantId: Long = participantId
+//    private var scores: List<Score> = scores
 
     // Group scores by end number, filtering for current participant only
     private var scoresByEnd = scores.filter { it.participantId == participantId }.groupBy { it.endNumber }
