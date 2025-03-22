@@ -29,21 +29,41 @@
             android:orientation="horizontal"
             app:layout_constraintTop_toBottomOf="@id/tvParticipantName">
 
-            <Button
-                android:id="@+id/btnEdit"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
-                android:layout_weight="1"
-                android:text="Edit" />
+<!--            <Button-->
+<!--                android:id="@+id/btnEdit"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginEnd="4dp"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="Edit" />-->
 
-            <Button
-                android:id="@+id/btnDelete"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+<!--            <Button-->
+<!--                android:id="@+id/btnDelete"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="4dp"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="Delete" />-->
+
+            <ImageButton
+                android:id="@+id/btnEdit"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_marginStart="4dp"
                 android:layout_weight="1"
-                android:text="Delete" />
+                android:backgroundTint="@color/target_red"
+                android:contentDescription="@string/edit"
+                android:src="@drawable/edit_svgrepo_com" />
+
+            <ImageButton
+                android:id="@+id/btnDelete"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="4dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/target_red"
+                android:contentDescription="@string/delete"
+                android:src="@drawable/delete_2_svgrepo_com" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

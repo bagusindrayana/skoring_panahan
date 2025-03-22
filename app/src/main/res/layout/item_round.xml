@@ -54,32 +54,82 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvNumberOfEnds">
 
-            <Button
+            <!--            <Button-->
+            <!--                android:id="@+id/btnViewScores"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginEnd="4dp"-->
+            <!--                android:layout_weight="1"-->
+            <!--                android:text="Scores" />-->
+
+            <!--            <Button-->
+            <!--                android:id="@+id/btnViewRanking"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginStart="4dp"-->
+            <!--                android:layout_marginEnd="4dp"-->
+            <!--                android:layout_weight="1"-->
+            <!--                android:text="Ranking" />-->
+
+            <!--            <Button-->
+            <!--                android:id="@+id/btnEdit"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginStart="4dp"-->
+            <!--                android:layout_marginEnd="4dp"-->
+            <!--                android:layout_weight="1"-->
+            <!--                android:text="Edit" />-->
+
+            <!--            <Button-->
+            <!--                android:id="@+id/btnDelete"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginStart="4dp"-->
+            <!--                android:layout_weight="1"-->
+            <!--                android:text="Delete" />-->
+            <ImageButton
                 android:id="@+id/btnViewScores"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="4dp"
                 android:layout_weight="1"
-                android:text="View Scores" />
+                android:backgroundTint="@color/target_red"
+                android:contentDescription="@string/score"
+                android:src="@drawable/table_svgrepo_com" />
 
-            <Button
+            <ImageButton
+                android:id="@+id/btnViewRanking"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="4dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/target_red"
+                android:contentDescription="Ranking"
+                android:src="@drawable/list_ol_svgrepo_com" />
+
+            <ImageButton
                 android:id="@+id/btnEdit"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_marginStart="4dp"
-                android:layout_marginEnd="4dp"
                 android:layout_weight="1"
-                android:text="Edit" />
+                android:backgroundTint="@color/target_red"
+                android:contentDescription="@string/edit"
+                android:src="@drawable/edit_svgrepo_com" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/btnDelete"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_marginStart="4dp"
                 android:layout_weight="1"
-                android:text="Delete" />
+                android:backgroundTint="@color/target_red"
+                android:contentDescription="@string/delete"
+                android:src="@drawable/delete_2_svgrepo_com" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

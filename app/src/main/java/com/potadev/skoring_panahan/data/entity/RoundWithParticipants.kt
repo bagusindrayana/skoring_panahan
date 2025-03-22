@@ -35,3 +35,12 @@ data class RoundWithScores(
     )
     val scores: List<Score>
 )
+
+data class ScoreWithParticipant(
+    @Embedded val score: Score,
+    @Relation(
+        parentColumn = "participantId",
+        entityColumn = "id"
+    )
+    val participant: Participant
+)

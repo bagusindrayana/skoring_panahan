@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.potadev.skoring_panahan.R
@@ -15,7 +16,8 @@ import java.util.Locale
 class RoundsAdapter(
     private val rounds: List<Round>,
     private val viewModel: RoundViewModel,
-    private val onViewScoresClick: (Round) -> Unit,
+private val onViewScoresClick: (Round) -> Unit,
+    private val onViewRankingClick: (Round) -> Unit,
     private val onEditClick: (Round) -> Unit
 ) : RecyclerView.Adapter<RoundsAdapter.ViewHolder>() {
 
@@ -26,9 +28,10 @@ class RoundsAdapter(
         val date: TextView = view.findViewById(R.id.tvDate)
         val numberOfEnds: TextView = view.findViewById(R.id.tvNumberOfEnds)
         val shootsPerEnd: TextView = view.findViewById(R.id.tvShootsPerEnd)
-        val btnViewScores: Button = view.findViewById(R.id.btnViewScores)
-        val btnEdit: Button = view.findViewById(R.id.btnEdit)
-        val btnDelete: Button = view.findViewById(R.id.btnDelete)
+        val btnViewScores: ImageButton = view.findViewById(R.id.btnViewScores)
+        val btnViewRanking: ImageButton = view.findViewById(R.id.btnViewRanking)
+        val btnEdit: ImageButton = view.findViewById(R.id.btnEdit)
+        val btnDelete: ImageButton = view.findViewById(R.id.btnDelete)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -50,7 +53,10 @@ class RoundsAdapter(
         holder.btnViewScores.setOnClickListener {
             onViewScoresClick(round)
         }
-        
+        holder.btnViewRanking.setOnClickListener {
+            onViewRankingClick(round)
+        }
+
         holder.btnEdit.setOnClickListener {
             onEditClick(round)
         }

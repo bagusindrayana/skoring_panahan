@@ -1,8 +1,10 @@
 package com.potadev.skoring_panahan.ui.rounds
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,6 +35,8 @@ class RoundsFragment : Fragment() {
     private val calendar = Calendar.getInstance()
     private val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
 
+
+    @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -40,19 +44,30 @@ class RoundsFragment : Fragment() {
     ): View? {
         val root = inflater.inflate(R.layout.fragment_rounds, container, false)
         
-        roundViewModel = ViewModelProvider(this).get(RoundViewModel::class.java)
-        participantViewModel = ViewModelProvider(this).get(ParticipantViewModel::class.java)
+        roundViewModel = ViewModelProvider(this)[RoundViewModel::class.java]
+        participantViewModel = ViewModelProvider(this)[ParticipantViewModel::class.java]
         
         val recyclerView = root.findViewById<RecyclerView>(R.id.rvRounds)
         recyclerView.layoutManager = LinearLayoutManager(context)
+
+
         
         roundViewModel.allRounds.observe(viewLifecycleOwner) { rounds ->
+            // Initialize RoundsAdapter properly
             adapter = RoundsAdapter(
                 rounds,
                 roundViewModel,
-                { round -> navigateToScoreScreen(round) },
-                { round -> showAddEditRoundDialog(round) }
+                ::navigateToScoreScreen,
+                ::navigateToRankingScreen,
+                ::showAddEditRoundDialog // Added missing onEditClick parameter
             )
+
+            if(rounds.isEmpty()){
+                root.findViewById<TextView>(R.id.textNoData).visibility = View.VISIBLE
+            } else {
+                root.findViewById<TextView>(R.id.textNoData).visibility = View.GONE
+            }
+
             recyclerView.adapter = adapter
         }
         
@@ -66,6 +81,11 @@ class RoundsFragment : Fragment() {
     
     private fun navigateToScoreScreen(round: Round) {
         val action = RoundsFragmentDirections.actionRoundsFragmentToScoreFragment(round.id)
+        findNavController().navigate(action)
+    }
+
+    private fun navigateToRankingScreen(round: Round) {
+        val action = RoundsFragmentDirections.actionRoundsFragmentToRankingFragment(round.id)
         findNavController().navigate(action)
     }
     
@@ -91,7 +111,8 @@ class RoundsFragment : Fragment() {
         // Set up participant selection
         rvParticipants.layoutManager = LinearLayoutManager(context)
         val selectedParticipantIds = mutableSetOf<Long>()
-        
+        var participantSelectionAdapter = ParticipantSelectionAdapter()
+        rvParticipants.adapter = participantSelectionAdapter
         if (round != null) {
             tvTitle.text = "Edit Round"
             etRoundName.setText(round.name)
@@ -102,17 +123,36 @@ class RoundsFragment : Fragment() {
             roundViewModel.getRoundWithParticipants(round.id).observe(viewLifecycleOwner) { roundWithParticipants ->
                 roundWithParticipants.participants.forEach { participant ->
                     selectedParticipantIds.add(participant.id)
+                    Log.i("PARTICIPANT_ID","${participant.id}")
                 }
+
+                participantSelectionAdapter.setSelectedParticipantIds(selectedParticipantIds.toList())
+
+                participantSelectionAdapter?.notifyDataSetChanged()
             }
+            Log.i("showAddEditRoundDialog","${round.id}")
+
+            participantViewModel.allParticipants.observe(viewLifecycleOwner) { participants ->
+                Log.i("participants","${participants.size}")
+                participantSelectionAdapter.setParticipants(participants)
+
+
+                participantSelectionAdapter?.notifyDataSetChanged()
+            }
+
+
         } else {
             tvTitle.text = "Add Round"
+            participantViewModel.allParticipants.observe(viewLifecycleOwner) { participants ->
+                Log.i("participants","${participants.size}")
+                participantSelectionAdapter.setParticipants(participants)
+
+
+                participantSelectionAdapter?.notifyDataSetChanged()
+            }
         }
         
-        // Set up participant selection adapter
-        participantViewModel.allParticipants.observe(viewLifecycleOwner) { participants ->
-            val participantSelectionAdapter = ParticipantSelectionAdapter(participants, selectedParticipantIds)
-            rvParticipants.adapter = participantSelectionAdapter
-        }
+
         
         val dialog = AlertDialog.Builder(requireContext())
             .setView(dialogView)

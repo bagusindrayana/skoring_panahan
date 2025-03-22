@@ -5,11 +5,13 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.potadev.skoring_panahan.adapters.RankingAdapter
 import com.potadev.skoring_panahan.data.AppDatabase
 import com.potadev.skoring_panahan.data.entity.Participant
 import com.potadev.skoring_panahan.data.entity.Round
 import com.potadev.skoring_panahan.data.entity.RoundWithParticipants
 import com.potadev.skoring_panahan.data.entity.Score
+import com.potadev.skoring_panahan.data.entity.ScoreWithParticipant
 import com.potadev.skoring_panahan.data.repository.ParticipantRepository
 import com.potadev.skoring_panahan.data.repository.RoundRepository
 import com.potadev.skoring_panahan.data.repository.ScoreRepository
@@ -72,4 +74,11 @@ class ScoreViewModel(application: Application) : AndroidViewModel(application) {
     suspend fun updateScore(roundId: Long, participantId: Long, endNumber: Int, shootNumber: Int, score: Int) {
         scoreRepository.updateScore(roundId, participantId, endNumber, shootNumber, score)
     }
+
+    fun getScoresInRound(roundId: Long):
+            LiveData<List<ScoreWithParticipant>> {
+        return scoreRepository.getScoresInRound(roundId)
+    }
+
+
 }

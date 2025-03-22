@@ -5,6 +5,7 @@
     <string name="title_rounds">Rounds</string>
     <string name="title_participants">Participants</string>
     <string name="title_scores">Scores</string>
+    <string name="title_ranking">Ranking</string>
     
     <!-- Participants -->
     <string name="add_participant">Add Participant</string>

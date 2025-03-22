@@ -1,8 +1,10 @@
 package com.potadev.skoring_panahan.data.repository
 
 import androidx.lifecycle.LiveData
+import com.potadev.skoring_panahan.adapters.RankingAdapter
 import com.potadev.skoring_panahan.data.dao.ScoreDao
 import com.potadev.skoring_panahan.data.entity.Score
+import com.potadev.skoring_panahan.data.entity.ScoreWithParticipant
 
 class ScoreRepository(private val scoreDao: ScoreDao) {
     
@@ -10,7 +12,7 @@ class ScoreRepository(private val scoreDao: ScoreDao) {
         return scoreDao.getScoresForParticipantInRound(roundId, participantId)
     }
     
-    fun getScoresForRound(roundId: Long): LiveData<List<Score>> {
+    fun getScoresForRound(roundId: Long): LiveData<List<ScoreWithParticipant>> {
         return scoreDao.getScoresForRound(roundId)
     }
     
@@ -46,4 +48,25 @@ class ScoreRepository(private val scoreDao: ScoreDao) {
         
         insertScores(scores)
     }
+
+    fun getScoresInRound(roundId: Long): LiveData<List<ScoreWithParticipant>> {
+        return scoreDao.getScoresForRound(roundId)
+    }
+
+//        fun getRankingForRound(roundId: Long): List<RankingAdapter.RankingItem>? {
+//            val scores = scoreDao.getScoresForRound(roundId).value
+//            return scores?.groupBy { it.participantId }
+//                ?.map { (participantId, scores) ->
+//                    val totalScore = scores.sumOf { it.score }
+//                    RankingAdapter.RankingItem(
+//                        rank = 0, // Rank will be assigned after sorting
+//                        name = "Participant $participantId", // Placeholder name, should be replaced with actual participant name
+//                        score = totalScore
+//                    )
+//                }
+//                ?.sortedByDescending { it.score }
+//                ?.mapIndexed { index, item ->
+//                    item.copy(rank = index + 1)
+//                }
+//        }
 }

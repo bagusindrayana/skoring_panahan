@@ -11,6 +11,10 @@
         <action
             android:id="@+id/action_roundsFragment_to_scoreFragment"
             app:destination="@id/scoreFragment" />
+
+        <action
+            android:id="@+id/action_roundsFragment_to_rankingFragment"
+            app:destination="@id/rankingFragment" />
     </fragment>
 
     <fragment
@@ -22,6 +26,15 @@
         android:id="@+id/scoreFragment"
         android:name="com.potadev.skoring_panahan.ui.rounds.ScoreFragment"
         android:label="@string/title_scores">
+        <argument
+            android:name="roundId"
+            app:argType="long" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/rankingFragment"
+        android:name="com.potadev.skoring_panahan.ui.rounds.RankingFragment"
+        android:label="@string/title_ranking">
         <argument
             android:name="roundId"
             app:argType="long" />

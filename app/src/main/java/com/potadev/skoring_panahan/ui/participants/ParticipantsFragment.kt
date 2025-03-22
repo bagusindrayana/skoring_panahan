@@ -38,6 +38,12 @@ class ParticipantsFragment : Fragment() {
             adapter = ParticipantsAdapter(participants, participantViewModel) { participant ->
                 showAddEditParticipantDialog(participant)
             }
+
+            if(participants.isEmpty()){
+                root.findViewById<TextView>(R.id.textNoData).visibility = View.VISIBLE
+            } else {
+                root.findViewById<TextView>(R.id.textNoData).visibility = View.GONE
+            }
             recyclerView.adapter = adapter
         }
         

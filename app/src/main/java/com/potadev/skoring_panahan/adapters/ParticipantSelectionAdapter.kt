@@ -9,10 +9,11 @@ import com.potadev.skoring_panahan.R
 import com.potadev.skoring_panahan.data.entity.Participant
 
 class ParticipantSelectionAdapter(
-    private val participants: List<Participant>,
-    private val selectedParticipantIds: MutableSet<Long>
+
 ) : RecyclerView.Adapter<ParticipantSelectionAdapter.ViewHolder>() {
 
+    private var participants: List<Participant> = emptyList()
+    private var selectedParticipantIds: MutableSet<Long> = mutableSetOf()
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val checkBox: CheckBox = view.findViewById(R.id.cbParticipant)
     }
@@ -42,5 +43,17 @@ class ParticipantSelectionAdapter(
     
     fun getSelectedParticipantIds(): List<Long> {
         return selectedParticipantIds.toList()
+    }
+
+    public fun setParticipants(participants: List<Participant>) {
+        this.participants = emptyList()
+        this.participants = participants
+        notifyDataSetChanged()
+    }
+
+    public fun setSelectedParticipantIds(selectedParticipantIds: List<Long>) {
+        this.selectedParticipantIds.clear()
+        this.selectedParticipantIds.addAll(selectedParticipantIds)
+        notifyDataSetChanged()
     }
 }

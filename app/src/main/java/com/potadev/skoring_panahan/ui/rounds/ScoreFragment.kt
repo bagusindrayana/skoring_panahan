@@ -1,5 +1,8 @@
 package com.potadev.skoring_panahan.ui.rounds
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -24,6 +27,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
+
 
 class ScoreFragment : Fragment() {
 
@@ -124,10 +128,18 @@ class ScoreFragment : Fragment() {
             buildScoreTable(round, scores)
         }
     }
+
+    fun isNightMode(context: Context): Boolean {
+        val nightModeFlags =
+            context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        return nightModeFlags == Configuration.UI_MODE_NIGHT_YES
+    }
     
+    @SuppressLint("ResourceAsColor")
     private fun buildScoreTable(round: Round, scores: List<Score>) {
         // Clear existing table
         scoreTable.removeAllViews()
+        var nightMode = isNightMode(requireContext())
         
         // Create header row
         val headerRow = TableRow(context).apply {
@@ -150,6 +162,9 @@ class ScoreFragment : Fragment() {
             setTypeface(null, android.graphics.Typeface.BOLD)
             gravity = android.view.Gravity.CENTER
             minWidth = 80
+            if(nightMode){
+                setTextColor(R.color.target_black)
+            }
         })
         
         // Add shoot headers
@@ -165,6 +180,9 @@ class ScoreFragment : Fragment() {
                 setTypeface(null, android.graphics.Typeface.BOLD)
                 gravity = android.view.Gravity.CENTER
                 minWidth = 160
+                if(nightMode){
+                    setTextColor(R.color.target_black)
+                }
             })
         }
         
@@ -180,6 +198,9 @@ class ScoreFragment : Fragment() {
             setTypeface(null, android.graphics.Typeface.BOLD)
             gravity = android.view.Gravity.CENTER
             minWidth = 80
+            if(nightMode){
+                setTextColor(R.color.target_black)
+            }
         })
         
         scoreTable.addView(headerRow)
@@ -196,7 +217,12 @@ class ScoreFragment : Fragment() {
                     TableLayout.LayoutParams.WRAP_CONTENT
                 )
                 if (endNumber % 2 == 0) {
-                    setBackgroundColor(0xFFEEEEEE.toInt())
+                    if(nightMode){
+                        setBackgroundColor(0xFF212121.toInt())
+                    } else {
+                        setBackgroundColor(0xFFEEEEEE.toInt())
+                    }
+
                 }
             }
             

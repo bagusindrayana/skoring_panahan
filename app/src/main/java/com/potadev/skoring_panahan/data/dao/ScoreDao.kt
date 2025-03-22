@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
 import com.potadev.skoring_panahan.data.entity.Score
+import com.potadev.skoring_panahan.data.entity.ScoreWithParticipant
 
 @Dao
 interface ScoreDao {
@@ -23,7 +24,7 @@ interface ScoreDao {
     }
 
     @Query("SELECT * FROM scores WHERE roundId = :roundId ORDER BY participantId, endNumber, shootNumber")
-    fun getScoresForRound(roundId: Long): LiveData<List<Score>>
+    fun getScoresForRound(roundId: Long): LiveData<List<ScoreWithParticipant>>
 
     @Query("UPDATE scores SET score = :score WHERE roundId = :roundId AND participantId = :participantId AND endNumber = :endNumber AND shootNumber = :shootNumber")
     suspend fun updateScore(roundId: Long, participantId: Long, endNumber: Int, shootNumber: Int, score: Int)
