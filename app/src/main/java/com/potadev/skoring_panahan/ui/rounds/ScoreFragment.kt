@@ -141,7 +141,7 @@ class ScoreFragment : Fragment() {
         scoreTable.removeAllViews()
         var nightMode = isNightMode(requireContext())
         
-        // Create header row
+        // heading
         val headerRow = TableRow(context).apply {
             layoutParams = TableLayout.LayoutParams(
                 TableLayout.LayoutParams.WRAP_CONTENT,
@@ -203,12 +203,13 @@ class ScoreFragment : Fragment() {
             }
         })
         
+        //menambahkan header ke table
         scoreTable.addView(headerRow)
         
         // Group scores by end number
         val scoresByEnd = scores.groupBy { it.endNumber }
         
-        // Create rows for each end
+        // buat baris baru
         for (endNumber in 1..round.numberOfEnds) {
             val endScores = scoresByEnd[endNumber] ?: emptyList()
             val tableRow = TableRow(context).apply {
@@ -216,6 +217,8 @@ class ScoreFragment : Fragment() {
                     TableLayout.LayoutParams.WRAP_CONTENT,
                     TableLayout.LayoutParams.WRAP_CONTENT
                 )
+
+                //selang seling warna
                 if (endNumber % 2 == 0) {
                     if(nightMode){
                         setBackgroundColor(0xFF212121.toInt())
@@ -242,7 +245,7 @@ class ScoreFragment : Fragment() {
             
             var endTotal = 0
             
-            // Add score input cells for each shoot
+            // tambah input skor (tombol plus minus)
             for (shootNumber in 1..round.shootsPerEnd) {
                 val score = endScores.find { it.shootNumber == shootNumber }?.score ?: 0
                 endTotal += score
@@ -255,7 +258,7 @@ class ScoreFragment : Fragment() {
                 tableRow.addView(scoreInputView, cellContainer)
             }
             
-            // Add end total cell
+            // menambahkan kolom total skor di akhir baris
             tableRow.addView(TextView(context).apply {
                 layoutParams = TableRow.LayoutParams(
                     TableRow.LayoutParams.WRAP_CONTENT,
@@ -269,10 +272,14 @@ class ScoreFragment : Fragment() {
                 minWidth = 80
             })
             
+
+            //menambahkan baris ke table
             scoreTable.addView(tableRow)
         }
     }
     
+
+    //fungsi untuk membuat tombol plus/minus input score
     private fun createScoreInputView(initialScore: Int, shootNumber: Int, endNumber: Int, roundId: Long): View {
         val view = layoutInflater.inflate(R.layout.table_cell_score_input, null)
         
@@ -305,6 +312,8 @@ class ScoreFragment : Fragment() {
         return view
     }
     
+
+    //fungsi untuk mengupdate skor ke database
     private fun updateScore(roundId: Long, endNumber: Int, shootNumber: Int, score: Int) {
         Log.i("UPDATE_SCORE", "Updating score for participant: ${selectedParticipant?.id}, end: $endNumber, shoot: $shootNumber, score: $score")
         CoroutineScope(Dispatchers.IO).launch {
