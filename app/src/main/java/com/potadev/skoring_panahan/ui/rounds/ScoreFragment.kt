@@ -302,11 +302,9 @@ class ScoreFragment : Fragment() {
         
         btnPlus.setOnClickListener {
             Log.i("PLUS", "$endNumber - $shootNumber")
-            if (tvScore.text.toString().toInt() < 10) {
-                val newScore = tvScore.text.toString().toInt() + 1
-                tvScore.text = newScore.toString()
-                updateScore(roundId, endNumber, shootNumber, newScore)
-            }
+            val newScore = tvScore.text.toString().toInt() + 1
+            tvScore.text = newScore.toString()
+            updateScore(roundId, endNumber, shootNumber, newScore)
         }
         
         return view
