@@ -1,6 +1,7 @@
 package com.potadev.skoring_panahan.ui.rounds
 
 import android.app.Application
+import android.widget.PopupWindow
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -16,6 +17,14 @@ import com.potadev.skoring_panahan.data.repository.ParticipantRepository
 import com.potadev.skoring_panahan.data.repository.RoundRepository
 import com.potadev.skoring_panahan.data.repository.ScoreRepository
 import kotlinx.coroutines.launch
+import android.view.View
+import android.content.Context
+import android.graphics.drawable.ColorDrawable
+import android.view.LayoutInflater
+import android.view.inputmethod.InputMethodManager
+import android.widget.LinearLayout
+import androidx.core.content.ContextCompat.getSystemService
+import com.potadev.skoring_panahan.R
 
 class ScoreViewModel(application: Application) : AndroidViewModel(application) {
     
@@ -31,6 +40,8 @@ class ScoreViewModel(application: Application) : AndroidViewModel(application) {
     
     private var _roundId: Long = 0
     private var _participantId: Long = 0
+
+
     
     init {
         val database = AppDatabase.getDatabase(application)
@@ -71,13 +82,18 @@ class ScoreViewModel(application: Application) : AndroidViewModel(application) {
         return scoreRepository.getScoresForParticipantInRound(_roundId, _participantId)
     }
     
-    suspend fun updateScore(roundId: Long, participantId: Long, endNumber: Int, shootNumber: Int, score: Int) {
-        scoreRepository.updateScore(roundId, participantId, endNumber, shootNumber, score)
+    suspend fun updateScore(roundId: Long, participantId: Long, endNumber: Int, shootNumber: Int, score: Int, bullseye: Boolean, miss: Boolean) {
+        scoreRepository.updateScore(roundId, participantId, endNumber, shootNumber, score, bullseye, miss)
     }
 
-    fun getScoresInRound(roundId: Long):
-            LiveData<List<ScoreWithParticipant>> {
+    fun getScoresInRound(roundId: Long): LiveData<List<ScoreWithParticipant>> {
         return scoreRepository.getScoresInRound(roundId)
+    }
+
+    fun insertScore(score: Score, bullseye: Boolean, miss: Boolean) {
+        viewModelScope.launch {
+            scoreRepository.insert(score.copy(bullseye = bullseye, miss = miss))
+        }
     }
 
 

@@ -24,9 +24,9 @@ class ScoreRepository(private val scoreDao: ScoreDao) {
         scoreDao.insertScores(scores)
     }
     
-    suspend fun updateScore(roundId: Long, participantId: Long, endNumber: Int, shootNumber: Int, score: Int) {
-        scoreDao.updateScore(roundId, participantId, endNumber, shootNumber, score)
-    }
+suspend fun updateScore(roundId: Long, participantId: Long, endNumber: Int, shootNumber: Int, score: Int, bullseye: Boolean, miss: Boolean) {
+    scoreDao.updateScore(roundId, participantId, endNumber, shootNumber, score, bullseye, miss)
+}
     
     // Helper method to generate empty scores for a participant in a round
     suspend fun generateEmptyScores(roundId: Long, participantId: Long, numberOfEnds: Int, shootsPerEnd: Int) {
@@ -40,7 +40,9 @@ class ScoreRepository(private val scoreDao: ScoreDao) {
                         participantId = participantId,
                         endNumber = endNumber,
                         shootNumber = shootNumber,
-                        score = 0
+                        score = 0,
+                        bullseye = false,
+                        miss = false
                     )
                 )
             }

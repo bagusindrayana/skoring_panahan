@@ -28,5 +28,7 @@ data class Score(
     val participantId: Long,
     val endNumber: Int,
     val shootNumber: Int,
-    var score: Int
+    var score: Int,
+    var bullseye: Boolean = false,
+    var miss: Boolean = false
 )

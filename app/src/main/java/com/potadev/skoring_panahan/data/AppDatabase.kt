@@ -1,6 +1,7 @@
 package com.potadev.skoring_panahan.data
 
 import android.content.Context
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -22,7 +23,9 @@ import com.potadev.skoring_panahan.data.util.DateConverter
         Score::class
     ],
     version = 1,
-    exportSchema = false
+//    autoMigrations = [
+//        AutoMigration (from = 1, to = 2)
+//    ]
 )
 @TypeConverters(DateConverter::class)
 abstract class AppDatabase : RoomDatabase() {

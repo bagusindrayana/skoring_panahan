@@ -26,6 +26,6 @@ interface ScoreDao {
     @Query("SELECT * FROM scores WHERE roundId = :roundId ORDER BY participantId, endNumber, shootNumber")
     fun getScoresForRound(roundId: Long): LiveData<List<ScoreWithParticipant>>
 
-    @Query("UPDATE scores SET score = :score WHERE roundId = :roundId AND participantId = :participantId AND endNumber = :endNumber AND shootNumber = :shootNumber")
-    suspend fun updateScore(roundId: Long, participantId: Long, endNumber: Int, shootNumber: Int, score: Int)
+@Query("UPDATE scores SET score = :score, bullseye = :bullseye, miss = :miss WHERE roundId = :roundId AND participantId = :participantId AND endNumber = :endNumber AND shootNumber = :shootNumber")
+suspend fun updateScore(roundId: Long, participantId: Long, endNumber: Int, shootNumber: Int, score: Int, bullseye: Boolean, miss: Boolean)
 }

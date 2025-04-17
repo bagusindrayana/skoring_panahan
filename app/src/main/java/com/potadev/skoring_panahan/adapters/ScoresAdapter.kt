@@ -42,31 +42,31 @@ class ScoresAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val score = scores[position]
-        holder.scoreValue.text = score.score.toString()
-        holder.endNumber.text = score.endNumber.toString()
-        holder.shootNumber.text = score.shootNumber.toString()
-        holder.participantName.text = participant.name
-        
-        holder.btnMinus.setOnClickListener {
-            if (score.score > 0) {
-                val newScore = score.score - 1
-                updateScore(score.roundId, score.participantId, score.endNumber, score.shootNumber, newScore)
-                holder.scoreValue.text = newScore.toString()
-            }
-        }
-        
-        holder.btnPlus.setOnClickListener {
-            if (score.score < 10) {
-                val newScore = score.score + 1
-                updateScore(score.roundId, score.participantId, score.endNumber, score.shootNumber, newScore)
-                holder.scoreValue.text = newScore.toString()
-            }
-        }
+//        holder.scoreValue.text = score.score.toString()
+//        holder.endNumber.text = score.endNumber.toString()
+//        holder.shootNumber.text = score.shootNumber.toString()
+//        holder.participantName.text = participant.name
+//
+//        holder.btnMinus.setOnClickListener {
+//            if (score.score > 0) {
+//                val newScore = score.score - 1
+//updateScore(score.roundId, score.participantId, score.endNumber, score.shootNumber, newScore, false, false)
+//                holder.scoreValue.text = newScore.toString()
+//            }
+//        }
+//
+//        holder.btnPlus.setOnClickListener {
+//            if (score.score < 10) {
+//                val newScore = score.score + 1
+//                updateScore(score.roundId, score.participantId, score.endNumber, score.shootNumber, newScore)
+//                holder.scoreValue.text = newScore.toString()
+//            }
+//        }
     }
     
-    private fun updateScore(roundId: Long, participantId: Long, endNumber: Int, shootNumber: Int, score: Int) {
-        CoroutineScope(Dispatchers.IO).launch {
-            viewModel.updateScore(roundId, participantId, endNumber, shootNumber, score)
-        }
+private fun updateScore(roundId: Long, participantId: Long, endNumber: Int, shootNumber: Int, score: Int, bullseye: Boolean, miss: Boolean) {
+    CoroutineScope(Dispatchers.IO).launch {
+        viewModel.updateScore(roundId, participantId, endNumber, shootNumber, score, bullseye, miss)
     }
+}
 }

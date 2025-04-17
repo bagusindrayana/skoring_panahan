@@ -106,42 +106,42 @@ class ScoreRowAdapter(
     ): View {
         val view = inflater.inflate(R.layout.item_score_input, parent, false)
         
-        val tvScore = view.findViewById<TextView>(R.id.tvScore)
-        val btnMinus = view.findViewById<Button>(R.id.btnMinus)
-        val btnPlus = view.findViewById<Button>(R.id.btnPlus)
-        val tvShootNumber = view.findViewById<TextView>(R.id.tvShootNumber)
-        
-        // Always set the text to the current score value
-        tvScore.text = initialScore.toString()
-        tvShootNumber.text = "Shoot $shootNumber"
-        
-        btnMinus.setOnClickListener {
-            Log.i("MINUS","$endNumber - $shootNumber")
-            if (tvScore.text.toString().toInt() > 0) {
-                val newScore = tvScore.text.toString().toInt() - 1
-                tvScore.text = newScore.toString()
-                updateScore(endNumber, shootNumber, newScore)
-                notifyItemChanged(endNumber - 1) // Refresh to update total
-            }
-        }
-        
-        btnPlus.setOnClickListener {
-            Log.i("PLUS","$endNumber - $shootNumber")
-            if (tvScore.text.toString().toInt() < 10) {
-                val newScore = tvScore.text.toString().toInt() + 1
-                tvScore.text = newScore.toString()
-                updateScore(endNumber, shootNumber, newScore)
-                notifyItemChanged(endNumber - 1) // Refresh to update total
-            }
-        }
+//        val tvScore = view.findViewById<TextView>(R.id.tvScore)
+//        val btnMinus = view.findViewById<Button>(R.id.btnMinus)
+//        val btnPlus = view.findViewById<Button>(R.id.btnPlus)
+//        val tvShootNumber = view.findViewById<TextView>(R.id.tvShootNumber)
+//
+//        // Always set the text to the current score value
+//        tvScore.text = initialScore.toString()
+//        tvShootNumber.text = "Shoot $shootNumber"
+//
+//        btnMinus.setOnClickListener {
+//            Log.i("MINUS","$endNumber - $shootNumber")
+//            if (tvScore.text.toString().toInt() > 0) {
+//                val newScore = tvScore.text.toString().toInt() - 1
+//                tvScore.text = newScore.toString()
+//updateScore(endNumber, shootNumber, newScore, false, false)
+//                notifyItemChanged(endNumber - 1) // Refresh to update total
+//            }
+//        }
+//
+//        btnPlus.setOnClickListener {
+//            Log.i("PLUS","$endNumber - $shootNumber")
+//            if (tvScore.text.toString().toInt() < 10) {
+//                val newScore = tvScore.text.toString().toInt() + 1
+//                tvScore.text = newScore.toString()
+//                updateScore(endNumber, shootNumber, newScore)
+//                notifyItemChanged(endNumber - 1) // Refresh to update total
+//            }
+//        }
         
         return view
     }
     
-    private fun updateScore(endNumber: Int, shootNumber: Int, score: Int) {
-        Log.i("UPDATE_SCORE", "Updating score for participant: $participantId, end: $endNumber, shoot: $shootNumber, score: $score")
+    private fun updateScore(endNumber: Int, shootNumber: Int, score: Int, bullseye: Boolean, miss: Boolean) {
+        Log.i("UPDATE_SCORE", "Updating score for participant: $participantId, end: $endNumber, shoot: $shootNumber, score: $score, bullseye: $bullseye, miss: $miss")
         CoroutineScope(Dispatchers.IO).launch {
-            scoreViewModel.updateScore(roundId, participantId, endNumber, shootNumber, score)
+            scoreViewModel.updateScore(roundId, participantId, endNumber, shootNumber, score, bullseye, miss)
         }
     }
 }

@@ -11,9 +11,16 @@
     <!-- Archery themed colors -->
     <color name="target_gold">#FFD700</color>
     <color name="target_red">#FF0000</color>
+    <color name="dark_target_red">#682424</color>
     <color name="target_blue">#0000FF</color>
     <color name="target_black">#000000</color>
     <color name="target_white">#FFFFFF</color>
+    <color name="dark_target_gray">#535353</color>
     <color name="bow_wood">#8B4513</color>
     <color name="field_green">#228B22</color>
+
+    <color name="tile_background_normal">#B6B6B6</color>
+    <color name="tile_background_pressed">#E0E0E0</color>
+    <color name="tile_background_selected">#6BA8C1</color>
+    <color name="tile_background_activated">#6F85FF</color>
 </resources>

@@ -11,10 +11,13 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.ScrollView
 import android.widget.Spinner
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
@@ -27,7 +30,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
-
 
 class ScoreFragment : Fragment() {
 
@@ -47,20 +49,32 @@ class ScoreFragment : Fragment() {
     
     var selectedParticipant: Participant? = null
 
+    var selectedScore: Score? = null
+    private lateinit var keyButtonLayout : LinearLayout
+    private lateinit var sv : ScrollView
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_score_table_new, container, false)
+        val root = inflater.inflate(R.layout.fragment_score, container, false)
         
         scoreViewModel = ViewModelProvider(this).get(ScoreViewModel::class.java)
         roundViewModel = ViewModelProvider(this).get(RoundViewModel::class.java)
+
         
         tvRoundName = root.findViewById(R.id.tvRoundName)
         tvRoundDetails = root.findViewById(R.id.tvRoundDetails)
         spinnerParticipants = root.findViewById(R.id.spinnerParticipants)
         scoreTable = root.findViewById(R.id.scoreTable)
+
+        keyButtonLayout = root.findViewById<LinearLayout>(R.id.btnLayout)
+        keyButtonLayout.visibility = View.GONE
+
+        sv = root.findViewById(R.id.scrollView)
+        //change padding bottom 0dp
+        sv.setPadding(0, 0, 0, 0)
         
         // Set the round ID in the view model
         scoreViewModel.setRound(args.roundId)
@@ -81,6 +95,36 @@ class ScoreFragment : Fragment() {
         scoreViewModel.currentParticipant.observe(viewLifecycleOwner) { participant ->
             if(selectedParticipant != null && currentRound != null){
                 loadScores(currentRound!!, selectedParticipant!!)
+            }
+        }
+
+        val buttons = listOf(
+            root.findViewById<Button>(R.id.btn1),
+            root.findViewById<Button>(R.id.btn2),
+            root.findViewById<Button>(R.id.btn3),
+            root.findViewById<Button>(R.id.btn4),
+            root.findViewById<Button>(R.id.btn5),
+            root.findViewById<Button>(R.id.btn6),
+            root.findViewById<Button>(R.id.btn7),
+            root.findViewById<Button>(R.id.btn8),
+            root.findViewById<Button>(R.id.btn9),
+            root.findViewById<Button>(R.id.btn10),
+            root.findViewById<Button>(R.id.btnX),
+            root.findViewById<Button>(R.id.btnM)
+        )
+
+        buttons.forEach { button ->
+            Log.i("BUTTON", button?.text.toString())
+            button.setOnClickListener {
+                val newScore = when (button.id) {
+                    R.id.btnX -> 10
+                    R.id.btnM -> 0
+                    else -> button.text.toString().toInt()
+                }
+
+                if(selectedScore != null){
+                    updateScore(selectedScore!!.roundId, selectedScore!!.endNumber, selectedScore!!.shootNumber, newScore)
+                }
             }
         }
         
@@ -203,13 +247,13 @@ class ScoreFragment : Fragment() {
             }
         })
         
-        //menambahkan header ke table
+        // Add header row to table
         scoreTable.addView(headerRow)
         
         // Group scores by end number
         val scoresByEnd = scores.groupBy { it.endNumber }
         
-        // buat baris baru
+        // Create new rows
         for (endNumber in 1..round.numberOfEnds) {
             val endScores = scoresByEnd[endNumber] ?: emptyList()
             val tableRow = TableRow(context).apply {
@@ -218,14 +262,13 @@ class ScoreFragment : Fragment() {
                     TableLayout.LayoutParams.WRAP_CONTENT
                 )
 
-                //selang seling warna
+                // Alternate row colors
                 if (endNumber % 2 == 0) {
                     if(nightMode){
                         setBackgroundColor(0xFF212121.toInt())
                     } else {
                         setBackgroundColor(0xFFEEEEEE.toInt())
                     }
-
                 }
             }
             
@@ -245,20 +288,20 @@ class ScoreFragment : Fragment() {
             
             var endTotal = 0
             
-            // tambah input skor (tombol plus minus)
+            // Add score input (plus/minus buttons)
             for (shootNumber in 1..round.shootsPerEnd) {
                 val score = endScores.find { it.shootNumber == shootNumber }?.score ?: 0
                 endTotal += score
                 
                 val scoreInputView = createScoreInputView(score, shootNumber, endNumber, round.id)
                 val cellContainer = TableRow.LayoutParams(
-                    TableRow.LayoutParams.WRAP_CONTENT,
+                    TableRow.LayoutParams.MATCH_PARENT,
                     TableRow.LayoutParams.WRAP_CONTENT
                 )
                 tableRow.addView(scoreInputView, cellContainer)
             }
             
-            // menambahkan kolom total skor di akhir baris
+            // Add total score column at the end of the row
             tableRow.addView(TextView(context).apply {
                 layoutParams = TableRow.LayoutParams(
                     TableRow.LayoutParams.WRAP_CONTENT,
@@ -272,50 +315,74 @@ class ScoreFragment : Fragment() {
                 minWidth = 80
             })
             
-
-            //menambahkan baris ke table
+            // Add row to table
             scoreTable.addView(tableRow)
         }
     }
-    
 
-    //fungsi untuk membuat tombol plus/minus input score
+
+
+
+    // Function to create the custom keyboard input view
+    @SuppressLint("MissingInflatedId")
     private fun createScoreInputView(initialScore: Int, shootNumber: Int, endNumber: Int, roundId: Long): View {
-        val view = layoutInflater.inflate(R.layout.table_cell_score_input, null)
-        
-        val tvScore = view.findViewById<TextView>(R.id.tvScore)
-        val btnMinus = view.findViewById<Button>(R.id.btnMinus)
-        val btnPlus = view.findViewById<Button>(R.id.btnPlus)
-        val tvShootNumber = view.findViewById<TextView>(R.id.tvShootNumber)
-        
+        val view = layoutInflater.inflate(R.layout.item_row, null)
+        val tvScore = view.findViewById<TextView>(R.id.tileTitle)
+        val tvSub = view.findViewById<TextView>(R.id.tileSubtitle)
         tvScore.text = initialScore.toString()
-        tvShootNumber.text = "Shoot $shootNumber"
-        
-        btnMinus.setOnClickListener {
-            Log.i("MINUS", "$endNumber - $shootNumber")
-            if (tvScore.text.toString().toInt() > 0) {
-                val newScore = tvScore.text.toString().toInt() - 1
-                tvScore.text = newScore.toString()
-                updateScore(roundId, endNumber, shootNumber, newScore)
+        tvSub.text = "$endNumber x $shootNumber"
+        val selectableTile: LinearLayout = view.findViewById(R.id.selectableTileContainer)
+        if(selectedScore != null){
+            val findScore = scores.find { it.endNumber == endNumber && it.shootNumber == shootNumber }
+            if(findScore != null && selectedScore!!.id == findScore.id){
+                selectableTile.isSelected = true
+            } else {
+                selectableTile.isSelected = false
             }
+        } else {
+            selectableTile.isSelected = false
         }
-        
-        btnPlus.setOnClickListener {
-            Log.i("PLUS", "$endNumber - $shootNumber")
-            val newScore = tvScore.text.toString().toInt() + 1
-            tvScore.text = newScore.toString()
-            updateScore(roundId, endNumber, shootNumber, newScore)
+        selectableTile.setOnClickListener {
+            selectedScore = scores.find { it.endNumber == endNumber && it.shootNumber == shootNumber }
+
+            // Toast.makeText(context, "Tile Clicked!", Toast.LENGTH_SHORT).show()
+
+            if(selectedParticipant != null && currentRound != null){
+                loadScores(currentRound!!, selectedParticipant!!)
+            }
+
+            keyButtonLayout.visibility = View.VISIBLE
+            sv.setPadding(0, 0, 0, 440)
+
         }
+
+//
         
         return view
     }
     
 
-    //fungsi untuk mengupdate skor ke database
+    // Function to update score in the database
     private fun updateScore(roundId: Long, endNumber: Int, shootNumber: Int, score: Int) {
         Log.i("UPDATE_SCORE", "Updating score for participant: ${selectedParticipant?.id}, end: $endNumber, shoot: $shootNumber, score: $score")
         CoroutineScope(Dispatchers.IO).launch {
-            scoreViewModel.updateScore(roundId, selectedParticipant!!.id, endNumber, shootNumber, score)
+            scoreViewModel.updateScore(roundId, selectedParticipant!!.id, endNumber, shootNumber, score, false, false)
+        }
+    }
+
+    // Function to insert a new score into the database
+    private fun insertScore(roundId: Long, endNumber: Int, shootNumber: Int, score: Int, bullseye: Boolean, miss: Boolean) {
+        val newScore = Score(
+            roundId = roundId,
+            participantId = selectedParticipant!!.id,
+            endNumber = endNumber,
+            shootNumber = shootNumber,
+            score = score,
+            bullseye = bullseye,
+            miss = miss
+        )
+        CoroutineScope(Dispatchers.IO).launch {
+            scoreViewModel.insertScore(newScore, bullseye, miss)
         }
     }
 }

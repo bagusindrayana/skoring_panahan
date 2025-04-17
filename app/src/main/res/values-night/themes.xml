@@ -2,11 +2,11 @@
     <!-- Base application theme. -->
     <style name="Theme.Skoring_panahan" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/target_gold</item>
+        <item name="colorPrimary">@color/target_red</item>
         <item name="colorPrimaryVariant">@color/bow_wood</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/target_red</item>
+        <item name="colorSecondary">@color/dark_target_red</item>
         <item name="colorSecondaryVariant">@color/target_blue</item>
         <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->

@@ -4,8 +4,10 @@ plugins {
 
     id("androidx.navigation.safeargs.kotlin")
 
-    id("com.google.devtools.ksp")
+    id("com.google.devtools.ksp") version "1.9.0-1.0.13"
 }
+
+
 
 android {
     namespace = "com.potadev.skoring_panahan"
@@ -21,6 +23,10 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
+        }
+
+        ksp {
+            arg("room.schemaLocation", "$projectDir/schemas")
         }
     }
 
@@ -53,6 +59,7 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
 }
 
 dependencies {
@@ -103,7 +110,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
     // Test
-//    testImplementation("junit:junit:4.13.2")
-//    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-//    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    //    testImplementation("junit:junit:4.13.2")
+    //    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    //    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 }

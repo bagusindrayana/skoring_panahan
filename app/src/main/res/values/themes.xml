@@ -6,7 +6,7 @@
         <item name="colorPrimaryVariant">@color/bow_wood</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/target_gold</item>
+        <item name="colorSecondary">@color/dark_target_red</item>
         <item name="colorSecondaryVariant">@color/target_blue</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
