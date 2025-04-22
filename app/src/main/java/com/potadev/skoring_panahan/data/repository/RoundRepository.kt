@@ -14,7 +14,7 @@ class RoundRepository(private val roundDao: RoundDao) {
     
     val allRounds: LiveData<List<Round>> = roundDao.getAllRounds()
     
-    fun getRoundWithParticipants(roundId: Long): LiveData<RoundWithParticipants> {
+    fun getRoundWithParticipants(roundId: Long): LiveData<RoundWithParticipants?> {
         return roundDao.getRoundWithParticipants(roundId)
     }
     

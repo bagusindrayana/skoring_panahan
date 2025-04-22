@@ -18,7 +18,7 @@
     <TextView
         android:id="@+id/tvRoundDetails"
         android:layout_width="0dp"
-        android:layout_height="24dp"
+        android:layout_height="72dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"

@@ -121,14 +121,16 @@ class RoundsFragment : Fragment() {
             
             // Load selected participants
             roundViewModel.getRoundWithParticipants(round.id).observe(viewLifecycleOwner) { roundWithParticipants ->
-                roundWithParticipants.participants.forEach { participant ->
-                    selectedParticipantIds.add(participant.id)
-                    Log.i("PARTICIPANT_ID","${participant.id}")
-                }
+               if(roundWithParticipants != null){
+                   roundWithParticipants.participants.forEach { participant ->
+                       selectedParticipantIds.add(participant.id)
+                       Log.i("PARTICIPANT_ID","${participant.id}")
+                   }
 
-                participantSelectionAdapter.setSelectedParticipantIds(selectedParticipantIds.toList())
+                   participantSelectionAdapter.setSelectedParticipantIds(selectedParticipantIds.toList())
 
-                participantSelectionAdapter?.notifyDataSetChanged()
+                   participantSelectionAdapter?.notifyDataSetChanged()
+               }
             }
             Log.i("showAddEditRoundDialog","${round.id}")
 

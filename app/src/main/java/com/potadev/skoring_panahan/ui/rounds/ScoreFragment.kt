@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.HorizontalScrollView
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.Spinner
@@ -18,8 +19,11 @@ import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.core.view.marginBottom
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.potadev.skoring_panahan.R
 import com.potadev.skoring_panahan.data.entity.Participant
@@ -52,6 +56,7 @@ class ScoreFragment : Fragment() {
     var selectedScore: Score? = null
     private lateinit var keyButtonLayout : LinearLayout
     private lateinit var sv : ScrollView
+    private lateinit var horizontalScrollView: HorizontalScrollView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -73,8 +78,13 @@ class ScoreFragment : Fragment() {
         keyButtonLayout.visibility = View.GONE
 
         sv = root.findViewById(R.id.scrollView)
+        horizontalScrollView = root.findViewById(R.id.horizontalScrollView)
         //change padding bottom 0dp
-        sv.setPadding(0, 0, 0, 0)
+        // sv.setPadding(0, 0, 0, 0)
+
+        val param = horizontalScrollView.layoutParams as ViewGroup.MarginLayoutParams
+        param.setMargins(0,8,0,8)
+        horizontalScrollView.layoutParams = param
         
         // Set the round ID in the view model
         scoreViewModel.setRound(args.roundId)
@@ -87,8 +97,10 @@ class ScoreFragment : Fragment() {
 
         // Load round with participants
         roundViewModel.getRoundWithParticipants(args.roundId).observe(viewLifecycleOwner) { roundWithParticipants ->
-            participants = roundWithParticipants.participants
-            setupParticipantsSpinner()
+            if (roundWithParticipants != null) {
+                participants = roundWithParticipants.participants
+                setupParticipantsSpinner()
+            }
         }
 
         // Observe the current participant
@@ -127,6 +139,25 @@ class ScoreFragment : Fragment() {
                 }
             }
         }
+
+        requireActivity().onBackPressedDispatcher.addCallback(object :OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // Add you code for the hardware back
+                if(selectedScore == null){
+                    //back to round fragment
+                    findNavController().navigateUp()
+                    return
+                } else {
+                    selectedScore = null
+                    keyButtonLayout.visibility = View.GONE
+                    //sv.setPadding(0, 0, 0, 0)
+                    val param = horizontalScrollView.layoutParams as ViewGroup.MarginLayoutParams
+                            param.setMargins(0,8,0,8)
+                    horizontalScrollView.layoutParams = param
+                }
+
+            }
+        })
         
         return root
     }
@@ -352,7 +383,11 @@ class ScoreFragment : Fragment() {
             }
 
             keyButtonLayout.visibility = View.VISIBLE
-            sv.setPadding(0, 0, 0, 440)
+            //sv.setPadding(0, 0, 0, 500)
+
+            val param = horizontalScrollView.layoutParams as ViewGroup.MarginLayoutParams
+            param.setMargins(0,0,0,400)
+            horizontalScrollView.layoutParams = param
 
         }
 

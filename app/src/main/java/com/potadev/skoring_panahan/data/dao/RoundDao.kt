@@ -18,7 +18,7 @@ interface RoundDao {
 
     @Transaction
     @Query("SELECT * FROM rounds WHERE id = :roundId")
-    fun getRoundWithParticipants(roundId: Long): LiveData<RoundWithParticipants>
+    fun getRoundWithParticipants(roundId: Long): LiveData<RoundWithParticipants?>
 
     @Insert
     suspend fun insert(round: Round): Long

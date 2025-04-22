@@ -9,7 +9,7 @@ class RankingAdapter : RecyclerView.Adapter<RankingAdapter.RankingViewHolder>() 
 
     private val items = mutableListOf<RankingItem>()
 
-    data class RankingItem(val rank: Int, val name: String, val score: Int)
+    data class RankingItem(val id:Long, val rank: Int, val name: String, val score: Int)
 
     inner class RankingViewHolder(private val binding: ItemRankingBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: RankingItem) {

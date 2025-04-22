@@ -28,7 +28,7 @@ class RoundViewModel(application: Application) : AndroidViewModel(application) {
         allRounds = roundRepository.allRounds
     }
     
-    fun getRoundWithParticipants(roundId: Long): LiveData<RoundWithParticipants> {
+    fun getRoundWithParticipants(roundId: Long): LiveData<RoundWithParticipants?> {
         return roundRepository.getRoundWithParticipants(roundId)
     }
     

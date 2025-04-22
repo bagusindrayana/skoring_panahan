@@ -54,11 +54,13 @@ class ScoreViewModel(application: Application) : AndroidViewModel(application) {
         _roundId = roundId
         viewModelScope.launch {
             roundRepository.getRoundWithParticipants(roundId).observeForever { roundWithParticipants ->
-                _currentRound.value = roundWithParticipants.round
-                
-                // If there are participants, set the first one as current
-                if (roundWithParticipants.participants.isNotEmpty()) {
-                    setParticipant(roundWithParticipants.participants[0].id)
+                if(roundWithParticipants != null){
+                    _currentRound.value = roundWithParticipants.round
+
+                    // If there are participants, set the first one as current
+                    if (roundWithParticipants.participants.isNotEmpty()) {
+                        setParticipant(roundWithParticipants.participants[0].id)
+                    }
                 }
             }
         }
