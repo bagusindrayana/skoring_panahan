@@ -210,7 +210,7 @@ class ExcelManager(private val context: Context) {
             skorSheet.addMergedRegion(org.apache.poi.ss.util.CellRangeAddress(0, 0, 0, 4))
 
             val row: Row = skorSheet.createRow(1)
-            row.createCell(0).setCellValue("ID")
+            row.createCell(0).setCellValue("ID")  //bisa id atau urutan nomor
             row.createCell(1).setCellValue("Nama")
             for (i in 1..round.shootsPerEnd) {
                 val cell: Cell = row.createCell(i+1)
@@ -219,9 +219,8 @@ class ExcelManager(private val context: Context) {
             row.createCell(round.shootsPerEnd+1).setCellValue("Total")
             var rowIndex2 = 2
 
-            //loop peserta dengan urutan rangking
+            //loop peserta dengan urutan rangking dan buat baris baru
             rankingItems?.forEach { item ->
-
                 val scoresByEnd = scores.groupBy { it.score.endNumber }
                 val contentRow: Row = skorSheet.createRow(rowIndex2++)
                 contentRow.createCell(0).setCellValue("${item.id}")
@@ -229,30 +228,22 @@ class ExcelManager(private val context: Context) {
 
                 var grandTotal = 0
 
-                //loop jumlah end untuk buat baris baru
+                //loop jumlah end untuk buat kolom baru (dari range 1 ke numberOfEnds, tergantung nyimpan di dbnya dari index 0 atau 1)
                 for (endNumber in 1..round.numberOfEnds) {
                     var total = 0
 
-                    //loop jumlah shoot untuk cari total score
+                    //loop jumlah shoot untuk cari total score (dari range 1 ke shootsPerEnd, tergantung nyimpan di dbnya dari index 0 atau 1)
                     for (shootNumber in 1..round.shootsPerEnd) {
                         val endScores = scoresByEnd[endNumber] ?: emptyList()
                         val score = endScores.find { it.score.shootNumber == shootNumber && it.score.participantId == item.id }?.score?.score ?: 0
                         total += score
                     }
-
                     grandTotal += total
-
 
                     val cell: Cell = contentRow.createCell(endNumber+1)
                     cell.setCellValue("$total")
                 }
-
                 contentRow.createCell(round.shootsPerEnd+1).setCellValue("$grandTotal")
-
-
-
-
-
             }
 
 
