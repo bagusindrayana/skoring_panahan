@@ -160,6 +160,8 @@ class ExcelManager(private val context: Context) {
             leaderBoardheet.addMergedRegion(org.apache.poi.ss.util.CellRangeAddress(0, 0, 0, 4))
 
             var rowIndex = 2
+
+            //loop peserta dengan urutan rangking
             rankingItems?.forEach { item ->
                 val row: Row = leaderBoardheet.createRow(rowIndex++)
                 val participant = item.name
@@ -179,11 +181,14 @@ class ExcelManager(private val context: Context) {
                 val scoresByEnd = scores.groupBy { it.score.endNumber }
 
                 var grandTotal = 0
+                //loop jumlah end untuk buat baris baru
                 for (endNumber in 1..round.numberOfEnds) {
                     val endScores = scoresByEnd[endNumber] ?: emptyList()
                     var endTotal = 0
                     var contentRow: Row = leaderBoardheet.createRow(rowIndex++)
                     contentRow.createCell(0).setCellValue("$endNumber")
+
+                    //loop jumlah shoot untuk buat kolom baru
                     for (shootNumber in 1..round.shootsPerEnd) {
                         val score = endScores.find { it.score.shootNumber == shootNumber && it.score.participantId == item.id }?.score?.score ?: 0
                         endTotal += score
@@ -213,6 +218,8 @@ class ExcelManager(private val context: Context) {
             }
             row.createCell(round.shootsPerEnd+1).setCellValue("Total")
             var rowIndex2 = 2
+
+            //loop peserta dengan urutan rangking
             rankingItems?.forEach { item ->
 
                 val scoresByEnd = scores.groupBy { it.score.endNumber }
@@ -221,8 +228,12 @@ class ExcelManager(private val context: Context) {
                 contentRow.createCell(1).setCellValue(item.name)
 
                 var grandTotal = 0
+
+                //loop jumlah end untuk buat baris baru
                 for (endNumber in 1..round.numberOfEnds) {
                     var total = 0
+
+                    //loop jumlah shoot untuk cari total score
                     for (shootNumber in 1..round.shootsPerEnd) {
                         val endScores = scoresByEnd[endNumber] ?: emptyList()
                         val score = endScores.find { it.score.shootNumber == shootNumber && it.score.participantId == item.id }?.score?.score ?: 0
